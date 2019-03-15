@@ -1,13 +1,51 @@
 import { Customer } from './Customer';
 import { ColorPreference, ColorFinish } from './ColorPreference';
+const NO_SOLUTION = "No solution exists";
+
+process.stdin.setEncoding('utf8');
+
+export function processInput(input: string) : string{
+    const lines: string[] = input.split("\n");
+    const colors:number = parseInt(lines[0]);
+    if (isNaN(colors)){
+        return NO_SOLUTION;
+    }
+    lines.shift();
+    
+    let customers: Customer[] = [];
+    lines.forEach(line => {
+        let customer = new Customer();
+        const preferencePattern = /([1-9]+[0-9]*) ([G|M])/g;
+        let match;
+        do {
+            match = preferencePattern.exec(line);
+            if (match) {
+                customer.preferences.push(new ColorPreference({id: parseInt(match[1]), preference: match[2] === 'G' ? ColorFinish.Gloss : ColorFinish.Mate}));
+            }
+        } while(match);
+
+        customers.push(customer);
+    });
+
+    const preferences = getColorPreferences(customers, colors);
+    if (preferences === undefined){
+        return NO_SOLUTION;
+    }
+
+    let printablePreferences = preferences.map(customerPreference => customerPreference.preference === ColorFinish.Mate ? "M" : "G");
+    return printablePreferences.join(" ");
+}
 
 export function getColorPreferences(customers: Customer[], colors:number): ColorPreference[]{
     const customerPreferences = satisfyCustomers(customers);
-    
+    if (customerPreferences === undefined){
+        return undefined;
+    }
+
     let preferences: ColorPreference[] = [];
     for(let i=1; i<=colors; i++){
-        const preference = customerPreferences.find(preference => preference.id == i);
-        if (preference !== null){
+        const preference = customerPreferences.find(preference => preference.id === i);
+        if (preference !== undefined){
             preferences.push(preference);
         }else{
             preferences.push(new ColorPreference({id: i, preference: ColorFinish.Gloss }));
