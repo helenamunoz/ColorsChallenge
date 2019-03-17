@@ -1,13 +1,20 @@
 # Portchain Paint Shop problem
 A solution to the Paint Shop problem described [here](https://docs.portchain.com/hiring/challenges/colors.html)
 
-This solution is implemented with Node.js + Typescript. Tests written in Jest.
+This solution is implemented with Node.js + Typescript + Jest.
 
 ## Dependencies
 Node.js is the only thing needed for running the code. Version used: 10.15.0
 
 ## Running the solution
-There are two ways of running the solution. 
+
+>npm install
+
+>npm run build
+
+This command will create the build folder that contians the main.js file used to run the script.
+
+There are two ways of running it.
 
 1. Redirect a file as input of the node process:
 
@@ -25,10 +32,7 @@ For example:
 `G G G G M`
 
 ## tests
-To run the tests, Jest is needed. Run:
->npm install
 
-and then:
 >npm run test
 
 A report including the coverage is printed.
