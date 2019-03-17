@@ -31,6 +31,5 @@
   },
   "author": "Helena Munoz <helena.munoz@gmail.com>",
   "dependencies": {
-    "tslib": "~1.9.3"
   }
 }

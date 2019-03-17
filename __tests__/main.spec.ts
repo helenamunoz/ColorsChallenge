@@ -1,9 +1,7 @@
-import { processInput,getColorPreferences } from '../src/main';
-import { Customer } from '../src/Customer';
-import { ColorFinish } from '../src/ColorPreference';
+import { printableCustomerPreferences } from '../src/satisfyCustomers';
 
 describe('', () => {
-it('case0', () => { expect(processInput(
+it('case0', () => { expect(printableCustomerPreferences(
 `5
 1 M 3 G 5 G
 2 G 3 M 4 G
@@ -11,14 +9,14 @@ it('case0', () => { expect(processInput(
 .toMatch("G G G G M");
 });
 
-it('case1', () => { expect(processInput(
+it('case1', () => { expect(printableCustomerPreferences(
 `1
 1 M
 1 G`))
 .toMatch("No solution exists");
 });
   
-it('case2', () => { expect(processInput(
+it('case2', () => { expect(printableCustomerPreferences(
 `5
 2 M
 5 G
@@ -37,39 +35,33 @@ it('case2', () => { expect(processInput(
 .toMatch("G M G M G");
 });
 
-it('case3', () => { expect(processInput(
+it('case3', () => { expect(printableCustomerPreferences(
 `2
 1 G 2 M
 1 M`)).toMatch("M M");
 });
 
-it('case4', () => { expect(processInput(
+it('case4', () => { expect(printableCustomerPreferences(
 `a`)).toMatch("No solution exists");
 });
 
-it('case5', () => { expect(processInput(
+it('case5', () => { expect(printableCustomerPreferences(
   `2
   1 G 2 G
   1 G`)).toMatch("G G");
 });
 
-it('case6', () => { expect(processInput(
+it('case6', () => { expect(printableCustomerPreferences(
   `3
   1 G 2 G
   1 G`)).toMatch("G G G");
 });
-  
-            
-  it('case1', () => {
-    const preferences = getColorPreferences(
-      [
-        new Customer({preferences: [{id: 1, preference: ColorFinish.Mate}, {id: 3, preference: ColorFinish.Gloss}, {id: 5, preference: ColorFinish.Gloss}]}), 
-        new Customer({preferences: [{id: 2, preference: ColorFinish.Gloss}, {id: 3, preference: ColorFinish.Mate}, {id: 4, preference: ColorFinish.Gloss}]}), 
-        new Customer({preferences: [{id: 5, preference: ColorFinish.Mate}]}), 
-      ],
-      5);
-  
-    expect(preferences).toMatchObject(
-      [{id: 1, preference: ColorFinish.Gloss}, {id: 2, preference: ColorFinish.Gloss}, {id: 3, preference: ColorFinish.Gloss}, {id: 4, preference: ColorFinish.Gloss}, {id: 5, preference: ColorFinish.Mate}]);  
-    })
+
+it('case7', () => { expect(printableCustomerPreferences(
+  `3
+  1 M
+  2 G 3 M
+  1 G 2 M`)).toMatch("M M M");
+});
+
 });
