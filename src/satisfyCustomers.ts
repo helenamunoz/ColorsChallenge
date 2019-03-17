@@ -1,27 +1,27 @@
+import { ColorFinish, ColorPreference } from './ColorPreference';
 import { Customer } from './Customer';
-import { ColorPreference, ColorFinish } from './ColorPreference';
 const NO_SOLUTION = "No solution exists";
 
 export function printableCustomerPreferences(input: string) : string{
     const lines: string[] = input.split("\n");
-    const colors:number = parseInt(lines[0]);
+    const colors:number = parseInt(lines[0], 10);
     
     if (isNaN(colors)){
         return NO_SOLUTION;
     }
     lines.shift();
     
-    let customers: Customer[] = [];
+    const customers: Customer[] = [];
     lines.forEach(line => {
-        let customer = new Customer();
+        const customer = new Customer();
         const preferencePattern = /([1-9]+[0-9]*) ([G|M])/g;
-        let match;
+        let match : RegExpExecArray;
         do {
             match = preferencePattern.exec(line);
-            if (match) {
-                customer.preferences.push(new ColorPreference({id: parseInt(match[1]), preference: match[2] === 'G' ? ColorFinish.Gloss : ColorFinish.Mate}));
+            if (match !== null) {
+                customer.preferences.push(new ColorPreference({id: parseInt(match[1], 10), preference: match[2] === 'G' ? ColorFinish.Gloss : ColorFinish.Mate}));
             }
-        } while(match);
+        } while(match !== null);
 
         customers.push(customer);
     });
@@ -31,7 +31,8 @@ export function printableCustomerPreferences(input: string) : string{
         return NO_SOLUTION;
     }
 
-    let printablePreferences = preferences.map(customerPreference => customerPreference.preference === ColorFinish.Mate ? "M" : "G");
+    const printablePreferences = preferences.map(customerPreference => customerPreference.preference === ColorFinish.Mate ? "M" : "G");
+    
     return printablePreferences.join(" ");
 }
 
@@ -41,9 +42,9 @@ function getColorPreferences(customers: Customer[], colors:number): ColorPrefere
         return undefined;
     }
 
-    let preferences: ColorPreference[] = [];
+    const preferences: ColorPreference[] = [];
     for(let i=1; i<=colors; i++){
-        const preference = customerPreferences.find(preference => preference.id === i);
+        const preference = customerPreferences.find(customerPreference => customerPreference.id === i);
         if (preference !== undefined){
             preferences.push(preference);
         }else{
@@ -55,19 +56,20 @@ function getColorPreferences(customers: Customer[], colors:number): ColorPrefere
 }
 
 function satisfyCustomers(customers: Customer[]) : ColorPreference[]{
-    if (customers.some(customer => customer.preferences.length == 0)){
+    if (customers.some(customer => customer.preferences.length === 0)){
         return undefined;
     }
 
-    let customersSatisfiedByGlossy: Customer[] = 
-    customers.filter(customer => customer.preferences.length > 1 || customer.preferences[0].preference != ColorFinish.Mate);
+    const customersSatisfiedByGlossy: Customer[] = 
+    customers.filter(customer => customer.preferences.length > 1 || customer.preferences[0].preference !== ColorFinish.Mate);
     
     if (customersSatisfiedByGlossy.length === customers.length){
         const colors = getColors(customers);
+
         return colors.map(color => new ColorPreference({id:color, preference:ColorFinish.Gloss}));
-    }else {
-        let onlyMateCustomers = 
-        customers.filter(customer => customersSatisfiedByGlossy.indexOf(customer) === -1);
+    }
+    else {
+        const onlyMateCustomers = customers.filter(customer => customersSatisfiedByGlossy.indexOf(customer) === -1);
 
         const mateColors = getColors(onlyMateCustomers);
         const matePreferences = mateColors.map(color => new ColorPreference({id:color, preference:ColorFinish.Mate}));
@@ -84,7 +86,7 @@ function satisfyCustomers(customers: Customer[]) : ColorPreference[]{
 }
 
 function getColors(customers: Customer[]) : number[]{
-    let colors: number[] = [];
+    const colors: number[] = [];
     customers.forEach(customer => {
         customer.preferences.forEach(preference => {
             if (colors.indexOf(preference.id) === -1) {

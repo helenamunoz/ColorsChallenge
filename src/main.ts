@@ -4,7 +4,7 @@ let input: string = "";
 
 process.stdin.setEncoding('utf8');
 
-process.stdin.on('data', function(chunk) {
+process.stdin.on('data', (chunk : string) => {
     input += chunk;
     if (input.endsWith("\n\n") || input.endsWith("\r\n\r\n")){
         process.stdout.write(printableCustomerPreferences(input.trim()));
@@ -12,6 +12,6 @@ process.stdin.on('data', function(chunk) {
     }
 });
 
-process.stdin.on('end', function() {
+process.stdin.on('end', () => {
     process.stdout.write(printableCustomerPreferences(input.trim()));
 });
