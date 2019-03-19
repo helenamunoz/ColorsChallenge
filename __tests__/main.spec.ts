@@ -1,5 +1,4 @@
 import { printableCustomerPreferences } from '../src/satisfyCustomers';
-
 describe('', () => {
 it('case0', () => { expect(printableCustomerPreferences(
 `5
@@ -62,6 +61,15 @@ it('case7', () => { expect(printableCustomerPreferences(
   1 M
   2 G 3 M
   1 G 2 M`)).toMatch("M M M");
+});
+
+it('case8', () => { expect(printableCustomerPreferences(
+  `4
+  4 M
+  3 M
+  1 G 2 G 3 G 4 M
+  3 M 4 G
+  3 G 4 M`)).toMatch("G G M M");
 });
 
 });

@@ -74,8 +74,10 @@ function satisfyCustomers(customers: Customer[]) : ColorPreference[]{
         const mateColors = getColors(onlyMateCustomers);
         const matePreferences = mateColors.map(color => new ColorPreference({id:color, preference:ColorFinish.Mate}));
         
+        const unsatisfiedCustomers = customersSatisfiedByGlossy.filter(customer => !customer.preferences.some(preference => matePreferences.some(matePreference => matePreference.id === preference.id && matePreference.preference === preference.preference)));
+
         const moreThanMateCustomerPreferences =
-         satisfyCustomers(customersSatisfiedByGlossy.map(customer => new Customer({preferences: customer.preferences.filter(preference => mateColors.indexOf(preference.id) === -1)})));
+         satisfyCustomers(unsatisfiedCustomers.map(customer => new Customer({preferences: customer.preferences.filter(preference => mateColors.indexOf(preference.id) === -1)})));
 
         if (moreThanMateCustomerPreferences !== undefined){
             return [...moreThanMateCustomerPreferences, ...matePreferences];
